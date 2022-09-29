@@ -2,26 +2,37 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import challenge from "../../assets/img/challenges.png";
+
 
 import "./processos-seletivos.css";
+import { AiOutlineClockCircle, AiOutlineStar } from "react-icons/ai";
+import { useEffect, useState } from "react";
+
 
 import { Link } from "react-router-dom";
 
+const axios = require("axios").default; 
+
 function ProcessosSeletivos() {
-  const vagasAbertas = [
-    {
-      empresa: "Itaú",
-      titulo: "Pessoa Desenvolvedora FullStack JR",
-      estado: "São Paulo",
-      pais: "Brasil",
-    },
-    {
-      empresa: "Itaú",
-      titulo: "Pessoa Desenvolvedora FullStack JR",
-      estado: "São Paulo",
-      pais: "Brasil",
-    },
-  ];
+  const [vagas, setVagas] = useState([]);
+
+  useEffect(() => {
+    const getVagas = async () => {
+      const res = await axios.get(
+       // "https://632565a54cd1a2834c3d7693.mockapi.io/api/v1/cursos"
+          "https://632565a54cd1a2834c3d7693.mockapi.io/api/v1/vagas"
+       );
+
+      res.data.forEach((data) => {
+        data.banner = challenge;
+      });
+
+      setVagas(res.data);
+    };
+    getVagas();
+  }, []);
+
 
   const seusProcessos = [
     {
@@ -56,7 +67,7 @@ function ProcessosSeletivos() {
           <Tabs defaultActiveKey="home">
             <Tab eventKey="home" title="Vagas Abertas">
               <ul className="processo-seletivo-lista">
-                {vagasAbertas.map((vaga, i) => {
+                {vagas.map((vaga, i) => {
                   return (
                     <li key={i}>
                       <div>
