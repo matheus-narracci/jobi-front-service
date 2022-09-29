@@ -2,10 +2,33 @@ import { Container, Button } from "react-bootstrap";
 import ladder from "../../assets/img/ladder.png";
 import challengesImg from "../../assets/img/challenges.png";
 import "./challenges.css";
-
+import challenge from "../../assets/img/challenges.png";
 import { Link } from "react-router-dom";
 
+import { AiOutlineClockCircle, AiOutlineStar } from "react-icons/ai";
+import { useEffect, useState } from "react";
+
+const axios = require("axios").default; 
 function Challenges() {
+  const [tecnologias, setTecnologias] = useState([]);
+
+  useEffect(() => {
+    const getTecnologia = async () => {
+      const res = await axios.get(
+       // "https://632565a54cd1a2834c3d7693.mockapi.io/api/v1/cursos"
+          "https://632565a54cd1a2834c3d7693.mockapi.io/api/v1/tecnologias"
+       );
+
+      res.data.forEach((data) => {
+        data.banner = challenge;
+      });
+
+      setTecnologias(res.data);
+    };
+    getTecnologia();
+  }, []);
+
+
   const challenges = [
     {
       banner: challengesImg,
@@ -39,6 +62,7 @@ function Challenges() {
     },
   ];
 
+  
   return (
     <>
       <div className="challenges">
